@@ -1,0 +1,1 @@
+int PadImage(unsigned char* image, unsigned char* imageLayer, int imageWidth, int imageHeight, int padding);

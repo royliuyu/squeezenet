@@ -18,7 +18,7 @@ int readPPM(unsigned char frame[IMAGE_HEIGHT * IMAGE_WIDTH * 3], char filename[]
 {
 	FILE *pFile;
 	pFile = fopen(filename, "r");
-	fseek(pFile, 15L, SEEK_SET);//In ppm file, the first 15 bytes are content of "p6,120 160, 255", image data is from 16th bytes
+	fseek(pFile, 15L, SEEK_SET);//In uncc.ppm file, the first 15 bytes are content of "p6,224 224, 255", image data is from 16th bytes
 
 	fread(frame, sizeof(unsigned char), IMAGE_HEIGHT * IMAGE_WIDTH * 3+15, pFile); 
 	fclose(pFile);

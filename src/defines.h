@@ -1,5 +1,5 @@
-#define IMAGE_HEIGHT 160
-#define IMAGE_WIDTH 120
+#define IMAGE_HEIGHT 224
+#define IMAGE_WIDTH 224
 
 
 
