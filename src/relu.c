@@ -1,5 +1,5 @@
 #include "relu.h"
-int relu(unsigned char* data, int reluLen) // reluLen is of RGB
+int Relu(int* data, int reluLen) // reluLen is of RGB
 {
 	int i;
 

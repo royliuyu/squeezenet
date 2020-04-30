@@ -5,6 +5,7 @@
 #include "defines.h"
 
 
+
 //**********************************************************************
 // Function Name: decode_image                                         *
 // Description: - read image in ppm formate, read the data of array    *
@@ -14,7 +15,7 @@
 // Return: 0 if success                                                *
 //**********************************************************************
 
-int readPPM(unsigned char frame[IMAGE_HEIGHT * IMAGE_WIDTH * 3], char filename[])
+int ReadPPM(unsigned char frame[IMAGE_HEIGHT * IMAGE_WIDTH * 3], char filename[])
 {
 	FILE *pFile;
 	pFile = fopen(filename, "r");
@@ -34,7 +35,7 @@ int readPPM(unsigned char frame[IMAGE_HEIGHT * IMAGE_WIDTH * 3], char filename[]
 // Output file: none                                                   *
 // Return: kernel file size                                            *
 //**********************************************************************
-int randomInit(float* data, int size, int range) // random form 0/255 to 255/255
+int RandomInit(float* data, int size, int range) // random form 0/255 to 255/255
 {
 	int i;
 	srand(time(NULL));

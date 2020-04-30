@@ -2,4 +2,4 @@
 #include <stdlib.h>
 #include "defines.h"
 
-int relu(unsigned char* data, int reluLen);
+int Relu(int* data, int reluLen);

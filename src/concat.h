@@ -1,0 +1,1 @@
+int Concat (int* output, int* source1, int* source2, int imgWidth, int imgHeight, int dim1, int dim2);

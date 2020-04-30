@@ -1,0 +1,1 @@
+int MAXpool(int* conv1Out, int* maxPool1Out, int filterSize , int stride, int padding);
