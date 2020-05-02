@@ -28,14 +28,6 @@
 #include "concat.h"
 
 
-//**********************************************************************
-// Function Name: mian.c                                               *
-// Description: - Main function on host, configure the kernel parameter*
-//                and run kernel                                       *
-// Input file: none                                                    *
-// Output file: none                                                   *
-// Return: 0 if success                                                *
-//**********************************************************************
 int main(int argc, char** argv) {
 	
 	imageCount = 0;
@@ -56,7 +48,7 @@ int main(int argc, char** argv) {
 	//image processing, add padding =3 for processing, RGB. 
 	//In 224*224*3, Out 227*227*3, filter: none
 	imgLayer = (unsigned char*)malloc((imgHeight+3)* (imgWidth+3) * 3 * sizeof(unsigned char));
-	PadImageRGB(image,imgLayer, imgWidth, imgHeight, 3); //transfer size from 224x224 to 227x227 pad a image , add totally 3 pad, RGB 
+	PadImageRGB(image,imgLayer, imgWidth, imgHeight, 1, 1, 3); //transfer size from 224x224 to 227x227 pad a image , add totally 3 pad, RGB 
 	imgLayerWidth = imgWidth+3;
 	imgLayerHeight = imgHeight+3;
 	free(image);
@@ -70,7 +62,7 @@ int main(int argc, char** argv) {
 	conv1Out =	(int *)malloc(96 * conv1Width * conv1Height *sizeof(int));
 	fltConv1 = (float*)malloc(3  *  7 * 7 * 96 * sizeof(float));
 	RandomInit(fltConv1, (7 * 7 * 96), 255);
-	ConvRGB(conv1In,conv1Out,fltConv1,imgLayerWidth,imgLayerHeight, 96, 7, 2);  //imgLayerWidth is with padding
+	ConvRGB(conv1In,conv1Out,fltConv1,imgLayerWidth,imgLayerHeight,1, 96, 7, 0, 2);  //imgLayerWidth is with padding
 	free(imgLayer);
 	conv1In = NULL;
 	imgLayer = NULL;
@@ -97,7 +89,7 @@ int main(int argc, char** argv) {
 	f2SqOut = (int*)malloc(16 * f2SqWidth * f2SqHeight * sizeof(int));
 	fltF2Sq = (float*)malloc(1 * 1 * 96 * 16 * sizeof(float));
 	RandomInit(fltF2Sq, (1 * 1 * 96 * 16 ), 255);
-	Conv1x1(f2SqIn, f2SqOut,fltF2Sq, f2SqWidth, f2SqHeight,16,1,96);
+	Conv1x1(f2SqIn, f2SqOut,fltF2Sq, f2SqWidth, f2SqHeight,16,96, 1, 0, 1);
 	free (p1Out);
 	f2SqIn = NULL;
 	p1Out = NULL;
