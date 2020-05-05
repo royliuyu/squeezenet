@@ -1,39 +1,40 @@
 #include <assert.h>
 #include "padding.h"
 
-int PadImageRGB(unsigned char* image, unsigned char* imageLayer, \
-			 int imageWidth, int imageHeight, int dimension, int channel, int totalPadding) 
+int PadImageRGB(unsigned char* image, unsigned char* imagePd, \
+			 int imgW, int imgH, int dimension, int channel, int totalPadding) 
 	{
 		int i, j, ch;
-		int imgW;
-		int imgH;
+		int imgWpadding;
+		int imgHpadding;
+		int padding;
+		padding = totalPadding/2;
 
 		assert(dimension == 1);
-
-		imgW= imageWidth+totalPadding;
-		imgH= imageHeight+totalPadding;
+		imgWpadding= imgW+totalPadding;
+		imgHpadding= imgH+totalPadding;
 
 		for (ch=0; ch<channel; ch++)
 		{
-			for (i=0; i< imgH;i++)
+			for (i=0; i< imgHpadding;i++)
 			{
-				for (j=0;j<imgW*3;j++)
+				for (j=0;j<imgWpadding*3;j+=3)
 				{
 					//  add o to where rows are the top and bottom OR columes are the head and tail
-					if ((i < totalPadding/2 | i >= (totalPadding/2+imageHeight)) | \
-						(j <  3* totalPadding/2 | j>= 3*(totalPadding/2+imageWidth)) ) 
+					if ((i <     padding | i >= (padding+imgH)) | \
+						(j <  3* padding | j>= 3*(padding+imgW)) ) 
 
 					{
-						imageLayer[ch * imgH*imgW*3 + (i*imgW*3+j)]=0; //r
-						imageLayer[ch * imgH*imgW*3 + (i*imgW*3+j+1)]=0; //g
-						imageLayer[ch * imgH*imgW*3 + (i*imgW*3+j+2)]=0;  //b
+						imagePd[ch * imgHpadding*imgWpadding*3 + (i*imgWpadding*3+j)]=0; //r
+						imagePd[ch * imgHpadding*imgWpadding*3 + (i*imgWpadding*3+j+1)]=0; //g
+						imagePd[ch * imgHpadding*imgWpadding*3 + (i*imgWpadding*3+j+2)]=0;  //b
 					}
 
 					else
 					{
-						imageLayer[ch * imgH*imgW*3 + (i*imgW*3+j)]=image[ch * imageWidth*imageHeight + (i-totalPadding/2)*imageWidth+(j-totalPadding/2)];
-						imageLayer[ch * imgH*imgW*3 + (i*imgW*3+j+1)]=image[ch * imageWidth*imageHeight + (i-totalPadding/2)*imageWidth+(j-totalPadding/2)+1];
-						imageLayer[ch * imgH*imgW*3 + (i*imgW*3+j+2)]=image[ch * imageWidth*imageHeight + (i-totalPadding/2)*imageWidth+(j-totalPadding/2)+2];
+ 						imagePd[ch * imgHpadding*imgWpadding*3 + (i*imgWpadding*3+j)]=image[ch * imgW*imgH + 3*(i-padding)*imgW+(j-3*padding)];
+						imagePd[ch * imgHpadding*imgWpadding*3 + (i*imgWpadding*3+j+1)]=image[ch * imgW*imgH + 3*(i-padding)*imgW+(j-3*padding)+1];
+						imagePd[ch * imgHpadding*imgWpadding*3 + (i*imgWpadding*3+j+2)]=image[ch * imgW*imgH + 3*(i-padding)*imgW+(j-3*padding)+2];
 					}
 				}
 			}		
@@ -41,40 +42,42 @@ int PadImageRGB(unsigned char* image, unsigned char* imageLayer, \
 
 			return 0;
 	}
+
 int PadFtMap(int* input, int* output, 
-			 int ftMapWidth, int ftMapHeight, int dim, int chnl, int pdng) // image: the input image, imageLayer:  the output image with padding, channel = 3 for RGB
+			 int ftMapW, int ftMapH, int chnl, int dim,  int pdng) // image: the input image, imageLayer:  the output image with padding, channel = 3 for RGB
 	{
-		int i,j ,d, k;
+		int i,j ,d, ch;
 		int W;
 		int H;
-		W= ftMapWidth+2*pdng;
-		H= ftMapHeight+2*pdng;
+
+
+		assert(dim ==1); //feature map's channel=1
+		W= ftMapW+2*pdng;
+		H= ftMapH+2*pdng;
 
 		for (d=0; d<dim; d++)
 		{
-			for (k=0; k< chnl; k++)
+			for (ch=0; ch < chnl; ch ++)
 			{
 				for (i=0; i< H;i++)
 				{
 					for (j=0;j<W;j++)
 					{
 
-						if (i< pdng | i >= (pdng+ftMapHeight)) // add rows of 0 on the top and bottom
+						if ((i< pdng | i >= (pdng+ftMapH))| (j < pdng | j>= (pdng+ftMapW))) // add rows of 0 on the top and bottom
 						{
-							output[d * chnl*H*W + k*H*W + (i * W + j)]=0; //r
+							output[d *chnl*H*W + ch*H*W + (i * W + j)]=0; //r
 						}
-						else if (j < pdng | j>= (pdng+ftMapWidth)) // add columes of 0 on the head and tail
-						{
-							output[d * chnl*H*W + k*H*W + (i * W + j)]=0;
-						}
+						
 						else
 						{
-							output[d * chnl*H*W + k*H*W + (i * W + j)]= \
-								input[d * chnl*ftMapHeight*ftMapWidth + k * ftMapHeight*ftMapWidth + (i-pdng)*ftMapWidth+(j-pdng)];
+							output[d * chnl*H*W + ch*H*W + (i * W + j)]= \
+								input[d * chnl*ftMapH*ftMapW + ch * ftMapH*ftMapW + (i-pdng)*ftMapW+(j-pdng)];
+
 						}//end of if
 					}
 				}				
-			}// end of k loop
+			}// end of ch loop
 		}
 		return 0;
 	}

@@ -15,14 +15,16 @@ int Concat (int* output, int* source1, int* source2, int imgWidth, int imgHeight
 
 
 	//add the 2nd feature map
-	for (dim=dim1; dim<dim2; dim++)
+	
+	for (dim=0; dim<dim2; dim++)
 	{
 		for (i=0; i<imgHeight; i++)
 		{
 			for (j=0; j < imgWidth; j++)
 			{
-				output[dim*imgWidth*imgHeight +(i*imgWidth+j)] = source1[dim*imgWidth*imgHeight +(i*imgWidth+j)];
+				output[(dim+dim1)*imgWidth*imgHeight +(i*imgWidth+j)] = source1[dim*imgWidth*imgHeight +(i*imgWidth+j)];
 			}
 		}	
 	}
+	return 0;
 }

@@ -1,5 +1,5 @@
 int PadImageRGB(unsigned char* image, unsigned char* imageLayer, \
 			 int imageWidth, int imageHeight, int dimension, int channel, int totalPadding) ; 
 
-int PadFtMap(int* input, int* output, \
-			 int ftMapWidth, int ftMapHeight, int dim, int kernelNum, int padding);
+int PadFtMap(int* input, int* output, 
+			 int ftMapW, int ftMapH, int chnl, int dim,  int pdng) ;
