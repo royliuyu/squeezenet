@@ -78,7 +78,7 @@ int SavePPM( unsigned char* data, char* fname,int w, int h)
 // Output file: XXX_1.ppm, XXX_2.ppm, XXX_3.ppm  ...                   *
 // Return: 0, if success                                               *
 //**********************************************************************
-int BatchSavePPM (unsigned char* imgData, char* filename, int width, int height, int batch)
+int BatchSavePPM (unsigned char* imgData, char* filename, int width, int height, int batch) //grey picture
 {
 	char filenameB[40]; //filename upto 40 characters
 	unsigned char* dataB;
@@ -91,9 +91,9 @@ int BatchSavePPM (unsigned char* imgData, char* filename, int width, int height,
 		FILE* pFile;
 		//dataB= data + i*w*h*3*sizeof(unsigned char); //move to next batch of image
 		dataB= &imgData[i*width * height * 3]; //move to next batch of image
-		sprintf(filenameB, "%s_%d.ppm", filename, i);
+		sprintf(filenameB, "%s_%d.pgm", filename, i);
 		pFile = fopen(filenameB, "wb");
-		fprintf(pFile,"P6\n%d %d\n255\n",width,height);
+		fprintf(pFile,"P5\n%d %d\n255\n",width,height);
 		fwrite(imgData, width *height * 3, 1, pFile);
 		fclose(pFile);
 	}
